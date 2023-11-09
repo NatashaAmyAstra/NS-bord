@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NS scherm</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div id="global-container">
+            <div id="klok-container">
+                <div id="klok">
+                    <script>
+                        const klok = document.getElementById("klok");
+                    
+                        for(let i = 0; i < 60; i++){
+                            const angle = i * 6;
+
+                            //create minute stripes
+                            const tijden = document.createElement("div");
+                            tijden.className = "tijden-blok";
+                            tijden.appendChild(document.createElement("div"));
+                            tijden.firstChild.className = i % 5 == 0 ? "tijden-5" : "tijden-1";
+                            tijden.setAttribute("style", `transform: rotate(${angle}deg);`);
+
+                            klok.appendChild(tijden);
+                        }
+                        
+                    </script>
+                    <div class="wijzer">
+                        <div id="uren-wijzer"></div>
+                    </div>
+                    <div class="wijzer">
+                        <div id="minuten-wijzer"></div>
+                    </div>
+                    <div class="wijzer">
+                        <div id="seconden-wijzer"></div>
+                    </div>
+                    <script>
+                        setInterval(()=>{
+                            const DATE = new Date();
+                            const Seconden_Wijzer = document.getElementById("seconden-wijzer").parentNode;
+                            const Minuten_Wijzer = document.getElementById("minuten-wijzer").parentNode;
+                            const Uren_Wijzer = document.getElementById("uren-wijzer").parentNode;
+
+                            Seconden_Wijzer.setAttribute("style", `transform: rotate(${6 * DATE.getSeconds()}deg);`);
+                            Minuten_Wijzer.setAttribute("style", `transform: rotate(${6 * DATE.getMinutes()}deg);`);
+                            Uren_Wijzer.setAttribute("style", `transform: rotate(${30 * DATE.getHours() + 0.5 * DATE.getMinutes()}deg);`);
+                            
+                        }, 1000/60)
+                    </script>
+                </div>
+            </div>
+
+
+            <div id="info-container">
+                <div id="nu-data">
+                    <div id="top-bar">
+                        <div id="wacht-tijd">
+                            <span id="wacht-tijd-cijfer" class="grote-text">1 </span><span id="tijd-scale">minuut</span>
+                        </div>
+                        <div id="trein-type" class="grote-text">Intercity</div>
+                        <div id="ns-logo"></div>
+                    </div>
+                    <span class="grote-text">
+                        Heerlen
+                    </span>
+                    <p id="via-text">
+                        via <span id="komende-locaties">`s-Hertogenbosch, Eindhoven, Weert, Roermond en Sittard</span>
+                    </p>
+                    <div id="trein-plaatje"></div>
+                </div>
+
+                <div id="volgende-data" class="kleine-text">
+                    <span>Hierna/<i>next:</i> 08:54 IC Venlo</span>
+                </div>
+            </div>
+
+
+            <div id="platform-container">
+                <div id="spoor-container">
+                    <div id="spoor-bord-hoekje"></div>
+                    <div id="spoor-text">spoor</div>
+                    <div id="spoor-nummer">18<p id="spoor-offset" class="kleine-text">b</p></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
