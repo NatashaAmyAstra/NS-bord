@@ -1,87 +1,181 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>NS scherm</title>
+        <title>NS bord</title>
         <link rel="stylesheet" href="css/style.css" />
+
+        <!-- fetch api data from NS -->
+        <script src="javascript/fetchAPI.js"></script>
     </head>
     <body>
         <div id="global-container">
-            <div id="klok-container">
-                <div id="klok">
+            <div id="clock-container">
+                <!-- clock sign -->
+                <div id="clock">
+                    <!-- draw the clock -->
                     <script>
-                        const klok = document.getElementById("klok");
+                        const clock = document.getElementById("clock");
                     
+                        // create minute stripes
                         for(let i = 0; i < 60; i++){
-                            const angle = i * 6;
+                            const Angle = i * 6; // 6 * 60 = 360 degrees
 
-                            //create minute stripes
-                            const tijden = document.createElement("div");
-                            tijden.className = "tijden-blok";
-                            tijden.appendChild(document.createElement("div"));
-                            tijden.firstChild.className = i % 5 == 0 ? "tijden-5" : "tijden-1";
-                            tijden.setAttribute("style", `transform: rotate(${angle}deg);`);
+                            const Time_Step = document.createElement("div");
+                            Time_Step.className = "time-step";
+                            Time_Step.appendChild(document.createElement("div"));
 
-                            klok.appendChild(tijden);
+                            // set the child class to either the 1 or 5 minute step indicator
+                            Time_Step.firstChild.className = i % 5 == 0 ? "time-step-5" : "time-step-1";
+                            Time_Step.setAttribute("style", `transform: rotate(${Angle}deg);`); // rotate the parent div
+
+                            clock.appendChild(Time_Step);
                         }
                         
                     </script>
-                    <div class="wijzer">
-                        <div id="uren-wijzer"></div>
-                    </div>
-                    <div class="wijzer">
-                        <div id="minuten-wijzer"></div>
-                    </div>
-                    <div class="wijzer">
-                        <div id="seconden-wijzer"></div>
-                    </div>
-                    <script>
-                        setInterval(()=>{
-                            const DATE = new Date();
-                            const Seconden_Wijzer = document.getElementById("seconden-wijzer").parentNode;
-                            const Minuten_Wijzer = document.getElementById("minuten-wijzer").parentNode;
-                            const Uren_Wijzer = document.getElementById("uren-wijzer").parentNode;
 
-                            Seconden_Wijzer.setAttribute("style", `transform: rotate(${6 * DATE.getSeconds()}deg);`);
-                            Minuten_Wijzer.setAttribute("style", `transform: rotate(${6 * DATE.getMinutes()}deg);`);
-                            Uren_Wijzer.setAttribute("style", `transform: rotate(${30 * DATE.getHours() + 0.5 * DATE.getMinutes()}deg);`);
+                    <!-- draw the clock hands -->
+                    <div class="indicators">
+                        <div id="hour-indicator"></div>
+                    </div>
+                    <div class="indicators">
+                        <div id="minutes-indicator"></div>
+                    </div>
+                    <div class="indicators">
+                        <div id="seconds-indicator"></div>
+                    </div>
+
+                    <!-- update the clock hands -->
+                    <script>
+                        setInterval(()=>{ // elke 1/60 seconden
+                            const DATE = new Date(); // get current time
+
+                            // get a reference to each clock hand
+                            const Seconds_Indicator = document.getElementById("seconds-indicator").parentNode;
+                            const Minutes_Indicator = document.getElementById("minutes-indicator").parentNode;
+                            const Hours_Indicator = document.getElementById("hour-indicator").parentNode;
+
+                            // rotate each hand according to the current time
+                            Seconds_Indicator.setAttribute("style", `transform: rotate(${6 * DATE.getMilliseconds() / 1000 + 6 * DATE.getSeconds()}deg);`);
+                            Minutes_Indicator.setAttribute("style", `transform: rotate(${6 * DATE.getMinutes()}deg);`);
+                            Hours_Indicator.setAttribute("style", `transform: rotate(${30 * DATE.getHours() + 0.5 * DATE.getMinutes()}deg);`);
                             
                         }, 1000/60)
                     </script>
                 </div>
             </div>
 
-
+            <!-- data sign -->
             <div id="info-container">
-                <div id="nu-data">
+                <div id="current-data">
+                    <!-- important data about arriving train -->
                     <div id="top-bar">
-                        <div id="wacht-tijd">
-                            <span id="wacht-tijd-cijfer" class="grote-text">1 </span><span id="tijd-scale">minuut</span>
+                        <!-- howl long until train arrives -->
+                        <div id="down-time-bar">
+                            <span id="down-time" class="large-text">1 </span><span id="time-scale">minuut</span>
                         </div>
-                        <div id="trein-type" class="grote-text">Intercity</div>
+                        <!-- what type of train is the arriving train -->
+                        <div id="train-type" class="large-text">Intercity</div>
                         <div id="ns-logo"></div>
                     </div>
-                    <span class="grote-text">
+                    <!-- final destination of train -->
+                    <span id="destination" class="large-text">
                         Heerlen
                     </span>
-                    <p id="via-text">
-                        via <span id="komende-locaties">`s-Hertogenbosch, Eindhoven, Weert, Roermond en Sittard</span>
+                    <!-- what places will the train pass -->
+                    <p id="route">
+                        <span id="upcoming-locations">via `s-Hertogenbosch, Eindhoven, Weert, Roermond en Sittard</span>
                     </p>
-                    <div id="trein-plaatje"></div>
+                    <div id="train-image"></div>
                 </div>
 
-                <div id="volgende-data" class="kleine-text">
-                    <span>Hierna/<i>next:</i> 08:54 IC Venlo</span>
+                <!-- info about the train following the arriving one -->
+                <div id="next-data" class="small-text">
+                    Hierna/<i>next:</i> <span id="following-train-data">08:54 IC Venlo</span>
                 </div>
             </div>
 
-
+            <!-- platform sign -->
             <div id="platform-container">
-                <div id="spoor-container">
-                    <div id="spoor-bord-hoekje"></div>
+                <div id="platform-subcontainer">
+                    <div id="platform-sign-corner"></div>
                     <div id="spoor-text">spoor</div>
-                    <div id="spoor-nummer">18<p id="spoor-offset" class="kleine-text">b</p></div>
+                    <div id="platform-number">18</div>
                 </div>
             </div>
+
+            <!-- update the sign's info with the data from the api -->
+            <script>
+                // get a reference for every element that needs to be changed
+                const E_Down_Time = document.getElementById("down-time");
+                const E_Time_Scale = document.getElementById("time-scale");
+
+                const E_Train_Type = document.getElementById("train-type");
+                
+                const E_Destination = document.getElementById("destination");
+                const E_Upcoming_Locations = document.getElementById("upcoming-locations");
+
+                const E_Following_Train_Data = document.getElementById("following-train-data");
+                
+                const E_Platform_Number = document.getElementById("platform-number");
+
+                setInterval(()=>{
+
+                    if(!g_loaded) return;
+
+
+                    //===   update waiting times   ===\\
+                    const Actual_Time = new Date(); // get current time
+                    const Arrival_Date = new Date(currentPlatform.actualDateTime); // get time of arrival as Date object
+
+                    // calculate time until train arrives
+                    const Arrival_Time_Minutes = Math.floor((Arrival_Date - Actual_Time) / (1000 * 60));
+
+                    E_Down_Time.innerHTML = Arrival_Time_Minutes < 1 ? "<1 " : `${Arrival_Time_Minutes} `;
+                    E_Time_Scale.innerHTML = Arrival_Time_Minutes <= 1 ? "minuut" : "minuten";
+
+
+
+                    //===   what type of train is it   ===\\
+                    // only take the first word ("ICE international" becomes "ICE")
+                    E_Train_Type.innerHTML = currentPlatform.product.longCategoryName.match(/^\w+/);
+
+
+
+                    //===   update destination and route   ===\\
+                    E_Destination.innerHTML = currentPlatform.direction; // update destination
+
+                    // build string with route stops
+                    let routeStops = "";
+                    const Number_Of_Stops = currentPlatform.routeStations.length - 1; // -1 to match index
+                    for(i in currentPlatform.routeStations){
+                        const Location = currentPlatform.routeStations[i].mediumName; // get location of current instance
+                        
+                        // add locations to the list, seperated by a comma or by "en" for the final location
+                        if(i == 0) routeStops += `via ${Location}`;
+                        else routeStops += (i < Number_Of_Stops ? ", " : " en ") + Location;
+                    }
+                    E_Upcoming_Locations.innerHTML = routeStops;
+
+
+
+                    //===   update following train data   ===\\
+                    // get 
+                    const Following_Arrival_Time = new Date(nextPlatform.actualDateTime)
+                    const Following_Minutes = Following_Arrival_Time.getMinutes();
+                    const Following_Hours = Following_Arrival_Time.getHours();
+                    const Following_Time = `${Following_Hours < 10 ? "0" : ""}${Following_Hours}:${Following_Minutes < 10 ? "0" : ""}${Following_Minutes}`;
+
+                    const next_Trein_Type = nextPlatform.product.categoryCode;
+                    const next_Eindpunt = nextPlatform.direction;
+
+                    E_Following_Train_Data.innerHTML = `${Following_Time} ${next_Trein_Type} ${next_Eindpunt}`;
+
+
+                    //===   update platform number   ===\\
+                    E_Platform_Number.innerHTML = activePlatform;
+
+                }, 1000/60);
+            </script>
         </div>
     </body>
 </html>

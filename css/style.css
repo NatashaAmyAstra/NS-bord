@@ -1,14 +1,13 @@
 body{
     font-size: 25px;
     font-family: arial;
-    user-select: none;
 }
 
-.kleine-text {
+.small-text {
     font-size: 25px;
 }
 
-.grote-text {
+.large-text {
     font-size: 35px;
     font-weight: 700;
 }
@@ -21,7 +20,7 @@ body{
     display: inline-flex;
 }
 
-#klok-container {
+#clock-container {
     background-color: #E2EAED;
     width: 240px;
     height: 100%;
@@ -43,7 +42,7 @@ body{
     display: inline-flex;
 }
 
-#nu-data {
+#current-data {
     background-color: #E2EAED;
     color: #00149E;
     height: 90%;
@@ -55,28 +54,28 @@ body{
     flex-direction: column;
 }
 
-#volgende-data {
+#next-data {
     background-color: #00149E;
     color: #E2EAED;
     height: 10%;
     padding-left: 10px;
 }
 
-#wacht-tijd {
+#down-time-bar {
     width: 245px;
     height: 50px;
     line-height: 50px;
 }
 
-#wacht-tijd-cijfer {
+#down-time {
     display:inline;
 }
 
-#via-text {
+#route {
     margin-top: 10px;
 }
 
-#spoor-container {
+#platform-subcontainer {
     top: 10%;
     left: 50%;
     transform: translate(-50%, 0);
@@ -89,7 +88,7 @@ body{
     
 }
 
-#spoor-bord-hoekje {
+#platform-sign-corner {
     background-color: #0245CE;
     transform: translate(-10%, -10%);
     width: 21px;
@@ -116,13 +115,13 @@ body{
     width: 80px;
 }
 
-#trein-type {
+#train-type {
     text-align: end;
     width: 162px;
 }
 
-#trein-plaatje {
-    background-image: url("../assets/trein-plaatje.png");
+#train-image {
+    background-image: url("../assets/train-image.png");
     background-size: 285px;
     width: 285px;
     height: 30px;
@@ -130,19 +129,13 @@ body{
     margin-top: auto;
 }
 
-#spoor-nummer {
-    display: inline-flex;
+#platform-number {
     font-size: 60px;
-    margin-left: 10px;
-    transform: translate(0, -10%);
+    line-height: 100%;
+    text-align: center;
 }
 
-#spoor-offset {
-    margin: 0;
-    margin-top: 8px;
-}
-
-#klok {
+#clock {
     background-color: #fff;
     height: 170px;
     width: 170px;
@@ -151,7 +144,7 @@ body{
     border-radius: 50%;
 }
 
-.tijden-blok {
+.time-step {
     height: 170px;
     width: 170px;
     margin: 0 auto;
@@ -161,7 +154,7 @@ body{
     z-index: auto;
 }
 
-.tijden-5 {
+.time-step-5 {
     background-color: #0245CE;
     height: 15px;
     width: 6px;
@@ -170,7 +163,7 @@ body{
     transform: translate(-50%, 0);
 }
 
-.tijden-1 {
+.time-step-1 {
     background-color: #0245CE;
     height: 4px;
     width: 4px;
@@ -179,27 +172,27 @@ body{
     transform: translate(-50%, 0);
 }
 
-.wijzer {
+.indicators {
     height: 170px;
     width: 170px;
     position: absolute;
     z-index: 1;
 }
 
-#seconden-wijzer {
-    background-image: url("../assets/seconde-wijzer.png");
+#seconds-indicator {
+    background-image: url("../assets/seconds-indicator.png");
     height: 170px;
     width: 170px;
 }
 
-#minuten-wijzer {
-    background-image: url("../assets/minuten-wijzer.png");
+#minutes-indicator {
+    background-image: url("../assets/minutes-indicator.png");
     height: 170px;
     width: 170px;
 }
 
-#uren-wijzer {
-    background-image: url("../assets/uren-wijzer.png");
+#hour-indicator {
+    background-image: url("../assets/hours-indicator.png");
     height: 170px;
     width: 170px;
 }
