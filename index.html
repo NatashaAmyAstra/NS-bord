@@ -69,7 +69,7 @@
                 <div id="current-data">
                     <!-- important data about arriving train -->
                     <div id="top-bar">
-                        <!-- howl long until train arrives -->
+                        <!-- how long until train arrives -->
                         <div id="down-time-bar">
                             <span id="down-time" class="large-text">1 </span><span id="time-scale">minuut</span>
                         </div>
@@ -108,6 +108,9 @@
                 // get a reference for every element that needs to be changed
                 const E_Down_Time = document.getElementById("down-time");
                 const E_Time_Scale = document.getElementById("time-scale");
+                let previousSecond = new Date();
+                previousSecond = previousSecond.getTime();
+                let showDigitalTime = false;
 
                 const E_Train_Type = document.getElementById("train-type");
                 
@@ -128,10 +131,22 @@
                     const Arrival_Date = new Date(currentPlatform.actualDateTime); // get time of arrival as Date object
 
                     // calculate time until train arrives
-                    const Arrival_Time_Minutes = Math.floor((Arrival_Date - Actual_Time) / (1000 * 60));
+                    const Current_Second = Math.floor(Actual_Time.getTime() / 1000);
+                    if(Current_Second % 5 == 0 && Current_Second != previousSecond) showDigitalTime = !showDigitalTime;
+                    previousSecond = Current_Second;
 
-                    E_Down_Time.innerHTML = Arrival_Time_Minutes < 1 ? "<1 " : `${Arrival_Time_Minutes} `;
-                    E_Time_Scale.innerHTML = Arrival_Time_Minutes <= 1 ? "minuut" : "minuten";
+                    if(showDigitalTime){
+                        const Hours = (Arrival_Date.getHours() < 10 ? "0" : "") + Arrival_Date.getHours();
+                        const Minutes = (Arrival_Date.getMinutes() < 10 ? "0" : "") + Arrival_Date.getMinutes();
+
+                        E_Down_Time.innerHTML = `${Hours}:${Minutes}`;
+                        E_Time_Scale.innerHTML = "";
+                    } else {
+                        const Arrival_Time_Minutes = Math.floor((Arrival_Date - Actual_Time) / (1000 * 60));
+
+                        E_Down_Time.innerHTML = Arrival_Time_Minutes < 1 ? "<1 " : `${Arrival_Time_Minutes} `;
+                        E_Time_Scale.innerHTML = Arrival_Time_Minutes <= 1 ? "minuut" : "minuten";
+                    }
 
 
 
